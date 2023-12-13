@@ -1,6 +1,6 @@
 ---
   
-  name: Portfolio Deployment
+  name: Devops-Portfolio Deployment
 
   on:
     push:
