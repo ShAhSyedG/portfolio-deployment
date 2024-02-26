@@ -1,0 +1,33 @@
+name: Upload to AWS S3
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Upload to S3 Main
+      if: github.ref == 'refs/heads/main'
+      env:
+        AWS_REGION: 'your-main-region'
+        AWS_ACCESS_KEY_ID: ${{ secrets.MAIN_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.MAIN_AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 sync ./path/to/files s3://your-main-bucket
+
+    - name: Upload to S3 Develop
+      if: github.ref == 'refs/heads/dev'
+      env:
+        AWS_REGION: 'your-develop-region'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DEVELOP_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DEVELOP_AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 sync ./path/to/files s3://your-develop-bucket
